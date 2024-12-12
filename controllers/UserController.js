@@ -9,9 +9,8 @@ const createUser = async (req, res) => {
     const user = {
       Email: req.body.Email,
       Password: encrypt.generatePassword(req.body.Password), // Ensure async if possible
-      MobileNumber: req.body.MobileNumber,
-      Coupons: ["67497c0f3600417c0e450d7d"],
-      FullName: "",
+      MobileNumber: "",
+      FullName: req.body.FullName,
       DateOfBirth: "",
       status: req.body.status,
       isAdmin: "false",
@@ -64,7 +63,6 @@ const getUserbyID = async (req, res) => {
     const user = await userModel
       .findById(id)
       .lean()
-      .populate("WishListCountries WishListStates Coupons"); // Use .lean() for faster query
     if (user) {
       res
         .status(200)
@@ -109,14 +107,12 @@ const deleteUser = async (req, res) => {
 
 // User login
 const loginUser = async (req, res) => {
-  const { Email, Password, MobileNumber } = req.body;
+  const { Email, Password } = req.body; // Only Email and Password
   let user;
 
   try {
-    // Single query with $or for Email and MobileNumber to avoid multiple MongoDB calls
-    user = await userModel
-      .findOne({ $or: [{ Email: Email }, { MobileNumber: MobileNumber }] })
-      .lean(); // Use .lean() to improve query performance
+    // Query for Email only
+    user = await userModel.findOne({ Email }).lean(); // Use .lean() to improve query performance
 
     if (user) {
       const isPasswordValid = await encrypt.comparePassword(
@@ -129,12 +125,13 @@ const loginUser = async (req, res) => {
         res.status(400).json({ message: "Invalid password" });
       }
     } else {
-      res.status(404).json({ message: "Email or Mobile Number not found" });
+      res.status(404).json({ message: "Email not found" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 module.exports = {
   createUser,
