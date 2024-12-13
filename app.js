@@ -5,17 +5,17 @@ const cors = require("cors");
 require("dotenv").config(); // Ensure environment variables are loaded
 
 const app = express();
-const PORT = process.env.PORT || 4000; 
+const PORT = process.env.PORT || 4000;
 
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-
 // Require Routes
 const userRoutes = require("./routes/UserRoutes");
 const googleRoutes = require("./routes/GoogleRoutes");
+const propertyRoutes = require("./routes/PropertyRoutes");
 
 app.get("/", (req, res) => {
   res.send("API is running...");
@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 // Define API Endpoints with prefixes
 app.use("/api/users", userRoutes);
 app.use("/api/google", googleRoutes);
+app.use("/api/property", propertyRoutes);
 
 // DATABASE CONNECTION
 const connectDB = async (retries = 5) => {
