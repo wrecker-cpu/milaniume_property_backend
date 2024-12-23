@@ -24,6 +24,10 @@ const propertySchema = new Schema({
     type: Boolean,
     default: false,
   },
+  Featured: {
+    type: Boolean,
+    default: false,
+  },
   Prices: {
     SalesPrice: { type: String },
     RentPrice: { type: String },
