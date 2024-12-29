@@ -1,7 +1,7 @@
 const enquiryModel = require("../models/EnquiryModel");
 require("dotenv").config();
-// const NodeCache = require("node-cache");
-// const cache = new NodeCache({ stdTTL: 1800 });
+const NodeCache = require("node-cache");
+const cache = new NodeCache({ stdTTL: 1800 });
 
 // Create enquiry
 const addEnquiry = async (req, res) => {
