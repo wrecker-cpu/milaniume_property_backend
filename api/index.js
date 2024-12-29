@@ -9,9 +9,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// Require Routes
-const userRoutes = require("../routes/UserRoutes");
-const googleRoutes = require("../routes/GoogleRoutes");
+const userRoutes = require("./routes/UserRoutes");
+const googleRoutes = require("./routes/GoogleRoutes");
+const propertyRoutes = require("./routes/PropertyRoutes");
+const enquiryRoutes = require("./routes/EnquiryRoutes");
 
 app.get("/", (req, res) => {
   res.send("API is running...");
@@ -19,13 +20,9 @@ app.get("/", (req, res) => {
 
 // Define API Endpoints with prefixes
 app.use("/api/users", userRoutes);
-app.use("/api/continent", continentRoutes);
-app.use("/api/country", countryRoutes);
-app.use("/api/state", stateRoutes);
-app.use("/api/package", packageRoutes);
-app.use("/api/hotel", hotelRoutes);
-app.use("/api/coupon", couponRoutes);
 app.use("/api/google", googleRoutes);
+app.use("/api/property", propertyRoutes);
+app.use("/api/enquiry", enquiryRoutes);
 
 // DATABASE CONNECTION
 const connectDB = async (retries = 5) => {
