@@ -17,6 +17,7 @@ const userRoutes = require("./routes/UserRoutes");
 const googleRoutes = require("./routes/GoogleRoutes");
 const propertyRoutes = require("./routes/PropertyRoutes");
 const enquiryRoutes = require("./routes/EnquiryRoutes");
+const requireRoutes = require("./routes/RequireRoutes");
 
 app.get("/", (req, res) => {
   res.send("API is running...");
@@ -27,6 +28,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/google", googleRoutes);
 app.use("/api/property", propertyRoutes);
 app.use("/api/enquiry", enquiryRoutes);
+app.use("/api/require", requireRoutes);
 
 // DATABASE CONNECTION
 const connectDB = async (retries = 5) => {
