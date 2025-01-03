@@ -29,17 +29,19 @@ const addProperty = async (req, res) => {
   }
 };
 
-// Get all propertys
 const getAllProperty = async (req, res) => {
   try {
-    const property = await propertyModel.find().lean(); // Use .lean() for faster query
-    res
-      .status(200)
-      .json({ data: property, message: "Property fetched successfully" });
+    let properties = cache.get("allpropertys");
+    if (!properties) {
+      properties = await propertyModel.find().lean(); // Fetch from DB
+      cache.set("allpropertys", properties); // Cache the result
+    }
+    res.status(200).json({ data: properties, message: "Properties fetched successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // Get property by ID
 const getPropertybyID = async (req, res) => {
