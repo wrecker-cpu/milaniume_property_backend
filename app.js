@@ -10,11 +10,13 @@ const PORT = process.env.PORT || 4000;
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ 
-  origin: "*", 
-  methods: "GET,HEAD,PUT,POST,DELETE",
-  credentials: true 
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:4000", "https://milaniume-property.vercel.app"],
+    methods: "GET,HEAD,PUT,POST,DELETE",
+    credentials: true,
+  })
+);
 
 // Require Routes
 const userRoutes = require("./routes/UserRoutes");
