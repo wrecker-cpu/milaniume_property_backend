@@ -10,7 +10,11 @@ const PORT = process.env.PORT || 4000;
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ 
+  origin: "*", 
+  methods: "GET,HEAD,PUT,POST,DELETE",
+  credentials: true 
+}));
 
 // Require Routes
 const userRoutes = require("./routes/UserRoutes");
