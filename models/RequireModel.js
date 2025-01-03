@@ -18,7 +18,7 @@ const requireSchema = new Schema({
     },
     RequiredAreaSqft: { min: { type: String }, max: { type: String } },
     RequiredBudget: { min: { type: String }, max: { type: String } },
-    RequiredPropertySellOrRent: { type: String, enum: ["Sell", "Rent"] },
+    RequiredPropertySellOrRent: { type: String, enum: ["Sell", "Rent","Buy"] },
     RequiredConstructionStatus: {
       type: String,
       enum: [
