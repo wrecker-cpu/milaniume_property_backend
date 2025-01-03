@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["http://localhost:4000", "https://milaniume-property.vercel.app"],
+    origin: ["http://localhost:5173", "https://milaniume-property.vercel.app"],
     methods: "GET,HEAD,PUT,POST,DELETE",
     credentials: true,
   })
