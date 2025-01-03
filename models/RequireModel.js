@@ -114,11 +114,11 @@ const requireSchema = new Schema({
   Facing: {
     East: { type: Boolean },
     North: { type: Boolean },
-    NorthEast: { type: Boolean },
-    NorthWest: { type: Boolean },
+    "North-East": { type: Boolean },
+    "North-West": { type: Boolean },
     South: { type: Boolean },
-    SouthEast: { type: Boolean },
-    SouthWest: { type: Boolean },
+    "South-East": { type: Boolean },
+    "South-West": { type: Boolean },
     West: { type: Boolean },
   },
 });
