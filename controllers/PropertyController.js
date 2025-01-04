@@ -71,6 +71,7 @@ const updateProperty = async (req, res) => {
     res
       .status(200)
       .json({ data: propertyData, message: "property updated successfully" });
+      cache.del("allpropertys")
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
