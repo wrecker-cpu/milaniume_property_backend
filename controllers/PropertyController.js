@@ -36,12 +36,13 @@ const getAllProperty = async (req, res) => {
       properties = await propertyModel.find().lean(); // Fetch from DB
       cache.set("allpropertys", properties); // Cache the result
     }
-    res.status(200).json({ data: properties, message: "Properties fetched successfully" });
+    res
+      .status(200)
+      .json({ data: properties, message: "Properties fetched successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 // Get property by ID
 const getPropertybyID = async (req, res) => {
@@ -64,9 +65,9 @@ const getPropertybyID = async (req, res) => {
 const updateProperty = async (req, res) => {
   const id = req.params.id;
   try {
-    const propertyData = await propertyModel
-      .findByIdAndUpdate(id, req.body, { new: true })
-      .lean(); // Use .lean()
+    const propertyData = await propertyModel.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
     res
       .status(200)
       .json({ data: propertyData, message: "property updated successfully" });
