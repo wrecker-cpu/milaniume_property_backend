@@ -33,7 +33,8 @@ const getAllProperty = async (req, res) => {
   try {
     let properties = cache.get("allpropertys");
     if (!properties) {
-      properties = await propertyModel.find().lean(); // Fetch from DB
+      // Fetch from DB and filter only verified properties
+      properties = await propertyModel.find({ Verified: true }).lean(); 
       cache.set("allpropertys", properties); // Cache the result
     }
     res
@@ -43,6 +44,7 @@ const getAllProperty = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // Get property by ID
 const getPropertybyID = async (req, res) => {
