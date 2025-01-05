@@ -28,10 +28,12 @@ const propertySchema = new Schema({
     type: Boolean,
     default: false,
   },
+  Verified: { type: Boolean, default: false },
   Prices: {
     SalesPrice: { type: String },
     RentPrice: { type: String },
   },
+
   PropertyDetails: {
     Bedrooms: { type: Number },
     Bathrooms: { type: Number },
@@ -107,7 +109,7 @@ const propertySchema = new Schema({
     Tenament: { type: Boolean },
     Building: { type: Boolean },
   },
-  BhkScheme:{
+  BhkScheme: {
     oneBHK: { type: Boolean },
     twoBHK: { type: Boolean },
     threeBHK: { type: Boolean },
