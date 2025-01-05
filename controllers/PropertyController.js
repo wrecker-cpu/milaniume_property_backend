@@ -16,6 +16,7 @@ const addProperty = async (req, res) => {
       // Ensure this is handled safely and won't affect the response
       try {
         cache.del("allpropertys");
+        cache.del("allAdminpropertys");
       } catch (cacheError) {
         console.error("Error clearing cache:", cacheError.message);
       }
@@ -33,7 +34,8 @@ const getAllProperty = async (req, res) => {
   try {
     let properties = cache.get("allpropertys");
     if (!properties) {
-      properties = await propertyModel.find().lean(); // Fetch from DB
+      // Fetch from DB and filter only verified properties
+      properties = await propertyModel.find({ Verified: true }).lean();
       cache.set("allpropertys", properties); // Cache the result
     }
     res
@@ -46,10 +48,10 @@ const getAllProperty = async (req, res) => {
 
 const getAllAdminProperty = async (req, res) => {
   try {
-    let properties = cache.get("allpropertys");
+    let properties = cache.get("allAdminpropertys");
     if (!properties) {
-      properties = await propertyModel.find()
-      cache.set("allpropertys", properties); // Cache the result
+      properties = await propertyModel.find().lean();
+      cache.set("allAdminpropertys", properties); // Cache the result
     }
     res
       .status(200)
@@ -86,7 +88,8 @@ const updateProperty = async (req, res) => {
     res
       .status(200)
       .json({ data: propertyData, message: "property updated successfully" });
-      cache.del("allpropertys")
+    cache.del("allpropertys");
+    cache.del("allAdminpropertys");
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
