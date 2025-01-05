@@ -33,8 +33,7 @@ const getAllProperty = async (req, res) => {
   try {
     let properties = cache.get("allpropertys");
     if (!properties) {
-      // Fetch from DB and filter only verified properties
-      properties = await propertyModel.find({ Verified: true }).lean(); 
+      properties = await propertyModel.find().lean(); // Fetch from DB
       cache.set("allpropertys", properties); // Cache the result
     }
     res
@@ -45,6 +44,20 @@ const getAllProperty = async (req, res) => {
   }
 };
 
+const getAllAdminProperty = async (req, res) => {
+  try {
+    let properties = cache.get("allpropertys");
+    if (!properties) {
+      properties = await propertyModel.find()
+      cache.set("allpropertys", properties); // Cache the result
+    }
+    res
+      .status(200)
+      .json({ data: properties, message: "Properties fetched successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 // Get property by ID
 const getPropertybyID = async (req, res) => {
@@ -98,6 +111,7 @@ module.exports = {
   addProperty,
   getAllProperty,
   updateProperty,
+  getAllAdminProperty,
   getPropertybyID,
   deleteProperty,
 };
