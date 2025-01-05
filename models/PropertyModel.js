@@ -29,6 +29,15 @@ const propertySchema = new Schema({
     default: false,
   },
   Verified: { type: Boolean, default: false },
+  PropertyStatus: {
+    type: String,
+    enum: [
+      "New Launch",
+      "Under Construction",
+      "Ready to Move",
+      "Old Construction",
+    ],
+  },
   Prices: {
     SalesPrice: { type: String },
     RentPrice: { type: String },
