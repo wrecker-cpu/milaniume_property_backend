@@ -10,6 +10,7 @@ const requireSchema = new Schema({
   RequiredPersonName: { type: String, required: true },
   RequiredPersonPhone: { type: String, required: true },
   RequiredPersonEmail: { type: String, required: true },
+  RequiredPersonDate: { type: Date, default: Date.now },
   RequiredPropertyDetails: {
     RequiredPropertyType: {
       type: String,
@@ -18,7 +19,7 @@ const requireSchema = new Schema({
     },
     RequiredAreaSqft: { min: { type: String }, max: { type: String } },
     RequiredBudget: { min: { type: String }, max: { type: String } },
-    RequiredPropertySellOrRent: { type: String, enum: ["Sell", "Rent","Buy"] },
+    RequiredPropertySellOrRent: { type: String, enum: ["Sell", "Rent", "Buy"] },
     RequiredConstructionStatus: {
       type: String,
       enum: [

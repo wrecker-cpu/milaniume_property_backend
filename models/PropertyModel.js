@@ -32,10 +32,10 @@ const propertySchema = new Schema({
   PropertyStatus: {
     type: String,
     enum: [
-      "New Launch",
-      "Under Construction",
-      "Ready to Move",
-      "Old Construction",
+      "NewLaunch",
+      "UnderConstruction",
+      "ReadyToMove",
+      "OldConstruction",
     ],
   },
   Prices: {
