@@ -180,6 +180,7 @@ const propertySchema = new Schema({
     SouthWest: { type: Boolean },
     West: { type: Boolean },
   },
+  PropertyDescription: { type: String },
 });
 
 module.exports = mongoose.model("Property", propertySchema); //exporting the model
