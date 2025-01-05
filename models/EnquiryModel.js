@@ -7,6 +7,7 @@ const enquirySchema = new Schema({
   EnquiryPersonPhone: { type: String, required: true },
   EnquiryPersonMessage: { type: String, required: true },
   EnquiryPersonDate: { type: Date, default: Date.now },
+  EnquiryPropertyType: { type: String },
   EnquiryStatus: {
     type: String,
     enum: ["pending", "overlooked", "approved"],
