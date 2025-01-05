@@ -107,6 +107,17 @@ const propertySchema = new Schema({
     Tenament: { type: Boolean },
     Building: { type: Boolean },
   },
+  BhkScheme:{
+    oneBHK: { type: Boolean },
+    twoBHK: { type: Boolean },
+    threeBHK: { type: Boolean },
+    fourBHK: { type: Boolean },
+    fiveBHK: { type: Boolean },
+    sixBHK: { type: Boolean },
+    aboveSixBHK: { type: Boolean },
+    duplex: { type: Boolean },
+    pg: { type: Boolean },
+  },
   CommercialPropertyFeatures: {
     BossCabin: { type: Boolean },
     ManagerCabin: { type: Boolean },
