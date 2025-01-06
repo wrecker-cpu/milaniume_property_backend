@@ -7,5 +7,6 @@ router.get("/", propertyController.getAllProperty);
 router.get("/allprops/admin", propertyController.getAllAdminProperty);
 router.get("/:id", propertyController.getPropertybyID);
 router.put("/allprops/admin/:id", propertyController.updateProperty);
+router.put("/allprops/admin", propertyController.updateAllProperties);
 router.delete("/allprops/admin/:id", propertyController.deleteProperty);
 module.exports = router;

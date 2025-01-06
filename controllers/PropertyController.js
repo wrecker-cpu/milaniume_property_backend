@@ -95,6 +95,30 @@ const updateProperty = async (req, res) => {
   }
 };
 
+// Update all properties
+const updateAllProperties = async (req, res) => {
+  try {
+    // Update all properties with the data in req.body
+    const updateResult = await propertyModel.updateMany({}, req.body, {
+      new: true,
+    });
+
+    // Response with the result of the update
+    res
+      .status(200)
+      .json({
+        data: updateResult,
+        message: "All properties updated successfully",
+      });
+
+    // Clear cache if needed
+    cache.del("allpropertys");
+    cache.del("allAdminpropertys");
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Delete property
 const deleteProperty = async (req, res) => {
   const id = req.params.id;
@@ -117,4 +141,5 @@ module.exports = {
   getAllAdminProperty,
   getPropertybyID,
   deleteProperty,
+  updateAllProperties
 };
