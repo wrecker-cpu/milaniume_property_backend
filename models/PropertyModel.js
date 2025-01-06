@@ -31,12 +31,7 @@ const propertySchema = new Schema({
   Verified: { type: Boolean, default: false },
   PropertyStatus: {
     type: String,
-    enum: [
-      "NewLaunch",
-      "UnderConstruction",
-      "ReadyToMove",
-      "OldConstruction",
-    ],
+    enum: ["NewLaunch", "UnderConstruction", "ReadyToMove", "OldConstruction"],
   },
   Prices: {
     SalesPrice: { type: String },
@@ -51,6 +46,10 @@ const propertySchema = new Schema({
   PropertyPhotos: {
     type: [String], // Array to store URLs of property photos
     default: [], // Default to an empty array
+  },
+  PropertyAddedDate: {
+    type: Date,
+    default: Date.now,
   },
   Landmark: {
     type: String,
