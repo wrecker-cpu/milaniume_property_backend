@@ -189,6 +189,7 @@ const propertySchema = new Schema({
     West: { type: Boolean },
   },
   PropertyDescription: { type: String },
+  RecycleBin: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("Property", propertySchema); //exporting the model
