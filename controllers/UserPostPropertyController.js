@@ -57,7 +57,7 @@ const addPostProperty = async (req, res) => {
 // Get all PostPropertys
 const getAllPostProperty = async (req, res) => {
   try {
-    const PostProperty = await PostPropertyModel.find().lean(); // Use .lean() for faster query
+    const PostProperty = await PostPropertyModel.find().lean().populate("PostedProperties"); // Use .lean() for faster query
     res.status(200).json({
       data: PostProperty,
       message: "PostProperty fetched successfully",
