@@ -177,9 +177,11 @@ const getIdsAndDates = async (req, res) => {
 
     // Combine results into a single response
     res.status(200).json({
-      propertyAdded: formattedData1,
-      EnquiryAdded: formattedData2,
-      RequirementAdded: formattedData3,
+      data: {
+        propertyAdded: formattedData1,
+        EnquiryAdded: formattedData2,
+        RequirementAdded: formattedData3,
+      },
       message: "IDs and dates for today fetched successfully",
     });
   } catch (error) {
