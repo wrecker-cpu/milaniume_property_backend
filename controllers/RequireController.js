@@ -73,6 +73,26 @@ const updateRequirement = async (req, res) => {
   }
 };
 
+const updateAllRequirement = async (req, res) => {
+  try {
+    // Update all properties with the data in req.body
+    const updateResult = await requirementModel.updateMany({}, req.body, {
+      new: true,
+    });
+
+    // Response with the result of the update
+    res.status(200).json({
+      data: updateResult,
+      message: "All Requirement updated successfully",
+    });
+
+    // Clear cache if needed
+    cache.del("allrequirements");
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Delete requirement
 const deleteRequirement = async (req, res) => {
   const id = req.params.id;
@@ -94,4 +114,5 @@ module.exports = {
   updateRequirement,
   getRequirementbyID,
   deleteRequirement,
+  updateAllRequirement
 };

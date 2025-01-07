@@ -9,4 +9,8 @@ router.get("/:id", propertyController.getPropertybyID);
 router.put("/allprops/admin/:id", propertyController.updateProperty);
 router.put("/allprops/admin", propertyController.updateAllProperties);
 router.delete("/allprops/admin/:id", propertyController.deleteProperty);
+router.get(
+  "/allprops/admin/todaysIncrement",
+  propertyController.getIdsAndDates
+);
 module.exports = router;

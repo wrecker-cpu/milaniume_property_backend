@@ -7,4 +7,8 @@ router.get("/", requirementController.getAllRequirement);
 router.get("/:id", requirementController.getRequirementbyID);
 router.put("/:id", requirementController.updateRequirement);
 router.delete("/:id", requirementController.deleteRequirement);
+router.put(
+  "/requirement/updateAll",
+  requirementController.updateAllRequirement
+);
 module.exports = router;
