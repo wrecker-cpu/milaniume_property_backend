@@ -124,8 +124,8 @@ const getIdsAndDates = async (req, res) => {
     // Get today's date in ISO format without time
     const today = new Date().toISOString().split("T")[0];
 
-    // Fetch IDs and dates from all models where the date matches today
-    const [data1, data2, data3] = await Promise.all([
+    // Fetch IDs, dates, and counts from all models where the date matches today
+    const [data1, data2, data3, count1, count2, count3] = await Promise.all([
       propertyModel
         .find(
           {
@@ -159,6 +159,9 @@ const getIdsAndDates = async (req, res) => {
           { _id: 1, RequiredPersonDate: 1 }
         )
         .lean(),
+      propertyModel.countDocuments(),
+      enquiryModel.countDocuments(),
+      requireModel.countDocuments(),
     ]);
 
     // Standardize the date field names in the response
@@ -178,15 +181,24 @@ const getIdsAndDates = async (req, res) => {
     // Combine results into a single response
     res.status(200).json({
       data: {
-        propertyAdded: formattedData1,
-        EnquiryAdded: formattedData2,
-        RequirementAdded: formattedData3,
+        propertyAdded: {
+          today: formattedData1,
+          total: count1,
+        },
+        enquiryAdded: {
+          today: formattedData2,
+          total: count2,
+        },
+        requirementAdded: {
+          today: formattedData3,
+          total: count3,
+        },
       },
-      message: "IDs and dates for today fetched successfully",
+      message: "IDs, dates, and total counts fetched successfully",
     });
   } catch (error) {
     res.status(500).json({
-      message: "Error fetching IDs and dates for today",
+      message: "Error fetching IDs, dates, and total counts",
       error: error.message,
     });
   }
