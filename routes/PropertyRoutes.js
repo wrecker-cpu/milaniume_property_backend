@@ -13,4 +13,5 @@ router.get(
   "/allprops/admin/todaysIncrement",
   propertyController.getIdsAndDates
 );
+router.get("/allprops/admin/analysis", propertyController.getPropertyAsPerType);
 module.exports = router;

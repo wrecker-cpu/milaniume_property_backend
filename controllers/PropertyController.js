@@ -119,6 +119,39 @@ const updateAllProperties = async (req, res) => {
   }
 };
 
+const getPropertyAsPerType = async (req, res) => {
+  try {
+    // Aggregate property counts grouped by PropertyType
+    const propertyCounts = await propertyModel.aggregate([
+      {
+        $group: {
+          _id: "$PropertyType",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Format the response to return the property counts
+    const formattedPropertyCounts = propertyCounts.map((item) => ({
+      propertyType: item._id,
+      total: item.total,
+    }));
+
+    res.status(200).json({
+      data: {
+        propertyCounts: formattedPropertyCounts,
+      },
+      message: "Property counts per type fetched successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching property counts per type",
+      error: error.message,
+    });
+  }
+};
+
+
 const getIdsAndDates = async (req, res) => {
   try {
     // Get today's date in ISO format without time
@@ -228,4 +261,5 @@ module.exports = {
   deleteProperty,
   getIdsAndDates,
   updateAllProperties,
+  getPropertyAsPerType
 };
