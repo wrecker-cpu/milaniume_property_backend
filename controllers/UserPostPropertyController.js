@@ -6,15 +6,19 @@ const cache = new NodeCache({ stdTTL: 1800 });
 // Create PostProperty
 const addPostProperty = async (req, res) => {
   try {
-    const { email, PostedProperties, ...otherUpdateData } = req.body; // Extract email, PostedProperties, and other data from the request body
+    const { Email, PostedProperties, ...otherUpdateData } = req.body; // Extract email, PostedProperties, and other data from the request body
+
 
     // Check if a post property already exists with the given email
-    const existingPostProperty = await PostPropertyModel.findOne({ email });
+    const existingPostProperty = await PostPropertyModel.findOne({
+      Email: { $regex: `^${Email}$`, $options: "i" },
+    });
+    
 
     if (existingPostProperty) {
       // Update the existing record by adding all new properties in the PostedProperties array
       const updatedPostProperty = await PostPropertyModel.findOneAndUpdate(
-        { email },
+        { Email },
         {
           ...otherUpdateData,
           $push: { PostedProperties: { $each: PostedProperties } },
