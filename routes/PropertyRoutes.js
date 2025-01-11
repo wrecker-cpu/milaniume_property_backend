@@ -13,5 +13,6 @@ router.get(
   "/allprops/admin/todaysIncrement",
   propertyController.getIdsAndDates
 );
+router.get("/properties/get-excel", propertyController.getExcelForProperties);
 router.get("/allprops/admin/analysis", propertyController.getPropertyAsPerType);
 module.exports = router;

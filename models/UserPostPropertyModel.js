@@ -7,6 +7,7 @@ const userSchema = new Schema({
   Email: { type: String, required: true, unique: true },
   Phone: { type: String },
   AltPhone: { type: String },
+  UserPostAdded: { type: Date, default: Date.now },
   PostedProperties: [{ type: Schema.Types.ObjectId, ref: "Property" }], // Reference to properties
 });
 
