@@ -36,13 +36,14 @@ const getExcelForEnquiry = async (req, res) => {
 
     // Define columns
     worksheet.columns = [
-      { header: "Name", key: "Name", width: 30 },
-      { header: "Email", key: "Email", width: 30 },
-      { header: "Phone", key: "Phone", width: 15 },
-      { header: "Message", key: "Message", width: 50 },
-      { header: "Date", key: "Date", width: 20 },
+      { header: "Quick ID No.", key: "QuickIDNo", width: 30 },
+      { header: "DATE & TIME", key: "Date&Time", width: 10 },
+      { header: "FULL NAME", key: "FullName", width: 20 },
+      { header: "EMAIL ID", key: "EmailId", width: 30 },
+      { header: "MOBILE NO :", key: "MobileNo", width: 15 },
       { header: "Property Type", key: "PropertyType", width: 20 },
       { header: "Status", key: "Status", width: 15 },
+      { header: "Message", key: "Message", width: 70 },
     ];
 
     // Fetch enquiries from the database
@@ -99,13 +100,14 @@ const getExcelForEnquiry = async (req, res) => {
 
     // Map filtered data to the format for Excel
     const data = filteredData.map((enquiry) => ({
-      Name: enquiry.EnquiryPersonName,
-      Email: enquiry.EnquiryPersonEmail,
-      Phone: enquiry.EnquiryPersonPhone,
-      Message: enquiry.EnquiryPersonMessage,
-      Date: enquiry.EnquiryPersonDate,
+      QuickIDNo: enquiry._id,
+      "Date&Time": enquiry.EnquiryPersonDate,
+      FullName: enquiry.EnquiryPersonName,
+      EmailId: enquiry.EnquiryPersonEmail,
+      MobileNo: enquiry.EnquiryPersonPhone,
       PropertyType: enquiry.EnquiryPropertyType,
       Status: enquiry.EnquiryStatus,
+      Message: enquiry.EnquiryPersonMessage,
     }));
 
     // Add filtered data rows to the worksheet

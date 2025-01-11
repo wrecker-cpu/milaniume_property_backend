@@ -3,6 +3,86 @@ require("dotenv").config();
 const NodeCache = require("node-cache");
 const ExcelJS = require("exceljs");
 const cache = new NodeCache({ stdTTL: 1800 });
+const {
+  excelResidentColumns,
+  excelCommercialColumns,
+  excelIndustrialColumns,
+  excelAgricultureColumns,
+} = require("./EXCEL/PropertyExcelColumns");
+const {
+  transformResidentData,
+  transformCommercialData,
+  transformIndustrialData,
+  transformAgricultureData,
+} = require("./EXCEL/PropertyExcelTransformData");
+
+// const transformResidentData = (filteredData) => {
+//   return filteredData.map((requirement) => ({
+//     RequirementIdNo: requirement._id,
+//     DateAndTime: requirement.RequiredPersonDate,
+//     Role: requirement.RequiredPersonRole,
+//     FullName: requirement.RequiredPersonName,
+//     MobileNo: requirement.RequiredPersonPhone,
+//     EmailId: requirement.RequiredPersonEmail,
+//     RequirementArea:
+//       requirement.RequiredPropertyDetails?.RequirementArea || "N/A",
+//     "Rent/Buy": requirement.RequiredPropertyDetails?.RequiredPropertySellOrRent,
+//     LookingFor:
+//       Object.keys(requirement.ResidentialAvailability || {}).find(
+//         (key) => requirement.ResidentialAvailability[key]
+//       ) || "N/A",
+//     PropertyType: requirement.RequiredPropertyDetails?.RequiredPropertyType,
+//     ConstructionStatus:
+//       requirement.RequiredPropertyDetails?.RequiredConstructionStatus || "N/A",
+//     Condition:
+//       Object.keys(requirement.Condition || {})
+//         .filter((key) => requirement.Condition[key])
+//         .join(", ") || "N/A",
+//     Facing:
+//       Object.keys(requirement.Facing || {})
+//         .filter((key) => requirement.Facing[key])
+//         .join(", ") || "N/A",
+//     Availability: [
+//       ...Object.keys(requirement.ResidentialAvailability || {}).filter(
+//         (key) => requirement.ResidentialAvailability[key]
+//       ),
+//       ...Object.keys(requirement.CommercialAvailability || {}).filter(
+//         (key) => requirement.CommercialAvailability[key]
+//       ),
+//     ].join(", ") || "N/A",
+//     areasqft:
+//       `${requirement.RequiredPropertyDetails?.RequiredAreaSqft?.min || "N/A"} - ${
+//         requirement.RequiredPropertyDetails?.RequiredAreaSqft?.max || "N/A"
+//       }`,
+//     MinBudget:
+//       `${requirement.RequiredPropertyDetails?.RequiredBudget?.min || "N/A"}`,
+//     MaxBudget:
+//       `${requirement.RequiredPropertyDetails?.RequiredBudget?.max || "N/A"}`,
+//     Description:
+//       requirement.RequiredPropertyDetails?.RequiredDescription || "N/A",
+//   }));
+// };
+
+// const excelResidentColumns= [
+//   { header: "REQUIREMENT ID NO:", key: "RequirementIdNo", width: 30 },
+//   { header: "DATE & TIME:", key: "DateAndTime", width: 20 },
+//   { header: "ROLE", key: "Role", width: 20 },
+//   { header: "FULL NAME", key: "FullName", width: 30 },
+//   { header: "MOBILE NO :", key: "MobileNo", width: 15 },
+//   { header: "EMAILID", key: "EmailId", width: 30 },
+//   { header: "REQUIREMENTAREA", key: "RequirementArea", width: 20 },
+//   { header: "Rent/Buy", key: "Rent/Buy", width: 10 },
+//   { header: "LOOKING FOR", key: "LookingFor", width: 20 },
+//   { header: "Property Type", key: "PropertyType", width: 20 },
+//   { header: "CONSTRUCTION STATUS", key: "ConstructionStatus", width: 20 },
+//   { header: "AVAILABILITY", key: "Availability", width: 15 },
+//   { header: "FACING", key: "Facing", width: 20 },
+//   { header: "CONDITION", key: "Condition", width: 30 },
+//   { header: "AREA (SQFT/SQYD) - Min to Max", key: "areasqft", width: 30 },
+//   { header: "Min Budget", key: "MinBudget", width: 15 },
+//   { header: "Max Budget", key: "MaxBudget", width: 15 },
+//   { header: "DESCRIPTION ", key: "Description", width: 20 },
+// ];
 
 // Create requirement
 const addRequirement = async (req, res) => {
@@ -64,38 +144,40 @@ const getExcelForRequirement = async (req, res) => {
   try {
     let workbook = new ExcelJS.Workbook();
     let worksheet = workbook.addWorksheet("Requirements");
+    const { filterBy, year, month, propertyType } = req.query;
+    let excelColumns;
+    let transformData;
+
+    switch (propertyType) {
+      case 'Residential':
+        excelColumns = excelResidentColumns;
+        transformData = transformResidentData;
+        break;
+      case 'Commercial':
+        excelColumns = excelCommercialColumns;
+        transformData = transformCommercialData;
+        break;
+      case 'Industrial':
+        excelColumns = excelIndustrialColumns;
+        transformData = transformIndustrialData;
+        break;
+      case 'Agriculture':
+        excelColumns = excelAgricultureColumns;
+        transformData = transformAgricultureData;
+        break;
+      default:
+        return res.status(400).json({ message: "Invalid PropertyType" });
+    }
+
 
     // Define columns based on the new schema
-    worksheet.columns = [
-      { header: "Role", key: "Role", width: 20 },
-      { header: "Name", key: "Name", width: 30 },
-      { header: "Phone", key: "Phone", width: 15 },
-      { header: "Email", key: "Email", width: 30 },
-      { header: "Date", key: "Date", width: 20 },
-      { header: "Property Type", key: "PropertyType", width: 20 },
-      { header: "Area Sqft", key: "AreaSqft", width: 15 },
-      { header: "Min Budget", key: "MinBudget", width: 15 },
-      { header: "Max Budget", key: "MaxBudget", width: 15 },
-      { header: "Sell/Rent", key: "SellRent", width: 10 },
-      { header: "Condition", key: "Condition", width: 30 },
-      {
-        header: "Residential Availability",
-        key: "ResidentialAvailability",
-        width: 25,
-      },
-      {
-        header: "Commercial Availability",
-        key: "CommercialAvailability",
-        width: 25,
-      },
-      { header: "Facing", key: "Facing", width: 20 },
-    ];
+    worksheet.columns = excelColumns;
 
     // Fetch requirements from the database
     const requirements = await requirementModel.find();
 
     // Destructure the filters from the query or body (assuming they are sent in query params)
-    const { filterBy, year, month } = req.query;
+
 
     // Filter the data based on the provided filters
     const filteredData = requirements.filter((requirement) => {
@@ -134,34 +216,14 @@ const getExcelForRequirement = async (req, res) => {
             requirementDate <= new Date(year, month, 0)
           : true;
 
-      return matchesDate;
+          const matchesPropertyType =
+        propertyType ? requirement.RequiredPropertyDetails?.RequiredPropertyType === propertyType : true;
+
+      return matchesDate && matchesPropertyType;
     });
 
     // Map filtered data to the format for Excel
-    const data = filteredData.map((requirement) => ({
-      Role: requirement.RequiredPersonRole,
-      Name: requirement.RequiredPersonName,
-      Phone: requirement.RequiredPersonPhone,
-      Email: requirement.RequiredPersonEmail,
-      Date: requirement.RequiredPersonDate,
-      PropertyType: requirement.RequiredPropertyDetails.RequiredPropertyType,
-      AreaSqft: `${requirement.RequiredPropertyDetails.RequiredAreaSqft.min} - ${requirement.RequiredPropertyDetails.RequiredAreaSqft.max}`,
-      MinBudget: `${requirement.RequiredPropertyDetails.RequiredBudget.min} `,
-      MaxBudget: `${requirement.RequiredPropertyDetails.RequiredBudget.max}`,
-      SellRent: requirement.RequiredPropertyDetails.RequiredPropertySellOrRent,
-      Condition: Object.keys(requirement.Condition)
-        .filter((key) => requirement.Condition[key])
-        .join(", "),
-      ResidentialAvailability: Object.keys(requirement.ResidentialAvailability)
-        .filter((key) => requirement.ResidentialAvailability[key])
-        .join(", "),
-      CommercialAvailability: Object.keys(requirement.CommercialAvailability)
-        .filter((key) => requirement.CommercialAvailability[key])
-        .join(", "),
-      Facing: Object.keys(requirement.Facing)
-        .filter((key) => requirement.Facing[key])
-        .join(", "),
-    }));
+    const data = transformData(filteredData);
 
     // Add filtered data rows to the worksheet
     data.forEach((requirement) => {
