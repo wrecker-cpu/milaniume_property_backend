@@ -8,13 +8,13 @@ const {
   excelCommercialColumns,
   excelIndustrialColumns,
   excelAgricultureColumns,
-} = require("./EXCEL/PropertyExcelColumns");
+} = require("./RequirementExcel/RequirementPropertyExcelColumns");
 const {
   transformResidentData,
   transformCommercialData,
   transformIndustrialData,
   transformAgricultureData,
-} = require("./EXCEL/PropertyExcelTransformData");
+} = require("./RequirementExcel/RequirementPropertyExcelTransformData");
 
 // const transformResidentData = (filteredData) => {
 //   return filteredData.map((requirement) => ({

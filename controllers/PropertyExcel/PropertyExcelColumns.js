@@ -1,0 +1,87 @@
+// excelColumns.js
+
+const excelResidentColumns = [
+  { header: "ID NO:", key: "IdNo", width: 30 },
+  { header: "DATE & TIME:", key: "DateAndTime", width: 20 },
+  { header: "PROPERTY NAME", key: "PropertyName", width: 30 },
+  { header: "MOBILE NO :", key: "MobileNo", width: 15 },
+  { header: "EMAILID", key: "EmailId", width: 30 },
+  { header: "ADDRESS", key: "Address", width: 30 },
+  { header: "AREA", key: "Area", width: 20 },
+  { header: "Rent/Buy", key: "Rent/Buy", width: 10 },
+  { header: "CONSTRUCTION STATUS", key: "ConstructionStatus", width: 20 },
+  { header: "Property Type", key: "PropertyType", width: 20 },
+  { header: "Property", key: "Property", width: 20 },
+  { header: "CONDITION", key: "Condition", width: 30 },
+  { header: "AVAILABILITY", key: "Availability", width: 15 },
+  { header: "AVAILABLEFOR", key: "AvailableFor", width: 15 },
+  { header: "FACING", key: "Facing", width: 20 },
+  { header: "AREA (SQFT/SQYD)", key: "areasqft", width: 30 },
+  { header: "Sales Prices", key: "SalesPrice", width: 15 },
+  { header: "Rent Prices", key: "RentPrice", width: 15 },
+  { header: "DESCRIPTION ", key: "Description", width: 20 },
+];
+
+const excelCommercialColumns = [
+  { header: "ID NO:", key: "IdNo", width: 30 },
+  { header: "DATE & TIME:", key: "DateAndTime", width: 20 },
+  { header: "PROPERTY NAME", key: "PropertyName", width: 30 },
+  { header: "MOBILE NO :", key: "MobileNo", width: 15 },
+  { header: "EMAILID", key: "EmailId", width: 30 },
+  { header: "ADDRESS", key: "Address", width: 30 },
+  { header: "AREA", key: "Area", width: 20 },
+  { header: "Rent/Buy", key: "Rent/Buy", width: 10 },
+  { header: "CONSTRUCTION STATUS", key: "ConstructionStatus", width: 20 },
+  { header: "Property Type", key: "PropertyType", width: 20 },
+  { header: "Property", key: "Property", width: 20 },
+  { header: "CONDITION", key: "Condition", width: 30 },
+  { header: "FACING", key: "Facing", width: 20 },
+  { header: "AREA (SQFT/SQYD)", key: "areasqft", width: 30 },
+  { header: "Sales Prices", key: "SalesPrice", width: 15 },
+  { header: "Rent Prices", key: "RentPrice", width: 15 },
+  { header: "DESCRIPTION ", key: "Description", width: 20 },
+];
+
+const excelIndustrialColumns = [
+  { header: "ID NO:", key: "IdNo", width: 30 },
+  { header: "DATE & TIME:", key: "DateAndTime", width: 20 },
+  { header: "PROPERTY NAME", key: "PropertyName", width: 30 },
+  { header: "MOBILE NO :", key: "MobileNo", width: 15 },
+  { header: "EMAILID", key: "EmailId", width: 30 },
+  { header: "ADDRESS", key: "Address", width: 30 },
+  { header: "AREA", key: "Area", width: 20 },
+  { header: "Rent/Buy", key: "Rent/Buy", width: 10 },
+  { header: "CONSTRUCTION STATUS", key: "ConstructionStatus", width: 20 },
+  { header: "Property Type", key: "PropertyType", width: 20 },
+  { header: "Property", key: "Property", width: 20 },
+  { header: "FACING", key: "Facing", width: 20 },
+  { header: "AREA (SQFT/SQYD)", key: "areasqft", width: 30 },
+  { header: "Sales Prices", key: "SalesPrice", width: 15 },
+  { header: "Rent Prices", key: "RentPrice", width: 15 },
+  { header: "DESCRIPTION ", key: "Description", width: 20 },
+];
+
+const excelAgricultureColumns = [
+  { header: "ID NO:", key: "IdNo", width: 30 },
+  { header: "DATE & TIME:", key: "DateAndTime", width: 20 },
+  { header: "PROPERTY NAME", key: "PropertyName", width: 30 },
+  { header: "MOBILE NO :", key: "MobileNo", width: 15 },
+  { header: "EMAILID", key: "EmailId", width: 30 },
+  { header: "ADDRESS", key: "Address", width: 30 },
+  { header: "AREA", key: "Area", width: 20 },
+  { header: "Rent/Buy", key: "Rent/Buy", width: 10 },
+  { header: "CONSTRUCTION STATUS", key: "ConstructionStatus", width: 20 },
+  { header: "Property Type", key: "PropertyType", width: 20 },
+  { header: "Property", key: "Property", width: 20 },
+  { header: "AREA (SQFT/SQYD)", key: "areasqft", width: 30 },
+  { header: "Sales Prices", key: "SalesPrice", width: 15 },
+  { header: "Rent Prices", key: "RentPrice", width: 15 },
+  { header: "DESCRIPTION ", key: "Description", width: 20 },
+];
+
+module.exports = {
+  excelResidentColumns,
+  excelCommercialColumns,
+  excelIndustrialColumns,
+  excelAgricultureColumns,
+};

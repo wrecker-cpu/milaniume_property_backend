@@ -6,6 +6,19 @@ const ExcelJS = require("exceljs");
 const NodeCache = require("node-cache");
 const cache = new NodeCache({ stdTTL: 1800 });
 
+const {
+  excelResidentColumns,
+  excelCommercialColumns,
+  excelIndustrialColumns,
+  excelAgricultureColumns,
+} = require("./PropertyExcel/PropertyExcelColumns");
+const {
+  transformResidentData,
+  transformCommercialData,
+  transformIndustrialData,
+  transformAgricultureData,
+} = require("./PropertyExcel/PropertyExcelTransformData");
+
 // Create property
 const addProperty = async (req, res) => {
   try {
@@ -35,43 +48,36 @@ const addProperty = async (req, res) => {
 
 const getExcelForProperties = async (req, res) => {
   try {
-    const { filterBy,approveStatus, year, month } = req.query;
-
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Properties");
+    const { filterBy, approveStatus, year, month, propertyType } = req.query;
+
+    let excelColumns;
+    let transformData;
+
+    switch (propertyType) {
+      case "Residential":
+        excelColumns = excelResidentColumns;
+        transformData = transformResidentData;
+        break;
+      case "Commercial":
+        excelColumns = excelCommercialColumns;
+        transformData = transformCommercialData;
+        break;
+      case "Industrial":
+        excelColumns = excelIndustrialColumns;
+        transformData = transformIndustrialData;
+        break;
+      case "Agriculture":
+        excelColumns = excelAgricultureColumns;
+        transformData = transformAgricultureData;
+        break;
+      default:
+        return res.status(400).json({ message: "Invalid PropertyType" });
+    }
 
     // Define the columns for the worksheet
-    worksheet.columns = [
-      { header: "Property Name", key: "PropertyName", width: 20 },
-      { header: "Property Type", key: "PropertyType", width: 20 },
-      { header: "Verified", key: "Verified", width: 30 },
-      { header: "For Sale", key: "ForSale", width: 10 },
-      { header: "For Rent", key: "ForRent", width: 10 },
-      { header: "Prices", key: "Prices", width: 20 },
-      { header: "Address", key: "Address", width: 30 },
-      { header: "City", key: "City", width: 15 },
-      { header: "Condition", key: "Condition", width: 50 },
-      { header: "Amenities", key: "Amenities", width: 50 },
-      { header: "All Residential", key: "AllResidential", width: 50 },
-      { header: "All Commercial", key: "AllCommercial", width: 50 },
-      { header: "All Industrial", key: "AllIndustrial", width: 50 },
-      { header: "All Plot Land", key: "AllPlotLand", width: 50 },
-      { header: "Facing", key: "Facing", width: 30 },
-      { header: "BHK Scheme", key: "BhkScheme", width: 50 },
-      {
-        header: "Residential Availability",
-        key: "ResidentialAvailabilityType",
-        width: 50,
-      },
-      { header: "Resident Available", key: "ResidentAvailable", width: 50 },
-      {
-        header: "Commercial Features",
-        key: "CommercialPropertyFeatures",
-        width: 50,
-      },
-      { header: "Property Description", key: "PropertyDescription", width: 50 },
-    ];
-
+    worksheet.columns = excelColumns;
     // Fetch property data from the database
     const properties = await propertyModel.find();
 
@@ -117,62 +123,18 @@ const getExcelForProperties = async (req, res) => {
           ? property?.Verified
           : !property?.Verified;
 
-      return matchesDate && matchesType;
+      const matchesPropertyType = propertyType
+        ? property.PropertyType ===
+          propertyType
+        : true;
+
+      return matchesDate && matchesType && matchesPropertyType;
     });
 
-    // Map filtered property data to the Excel worksheet rows
-    filteredData.forEach((property) => {
-      worksheet.addRow({
-        PropertyName: property.PropertyName || "N/A",
-        PropertyType: property.PropertyType || "N/A",
-        Verified:
-          property.Verified === true ? "verified" : "notVerified" || "N/A",
-        ForSale: property.ForSale ? "Yes" : "No",
-        ForRent: property.ForRent ? "Yes" : "No",
-        Prices: `Sales: ${property.Prices?.SalesPrice || "N/A"}, Rent: ${
-          property.Prices?.RentPrice || "N/A"
-        }`,
-        Address: property.Address || "N/A",
-        City: property.City || "N/A",
-        Condition: Object.keys(property.Condition || {})
-          .filter((key) => property.Condition[key])
-          .join(" , "),
-        Amenities: Object.keys(property.Amenities || {})
-          .filter((key) => property.Amenities[key])
-          .join(" , "),
-        AllResidential: Object.keys(property.AllResidential || {})
-          .filter((key) => property.AllResidential[key])
-          .join(" , "),
-        AllCommercial: Object.keys(property.AllCommercial || {})
-          .filter((key) => property.AllCommercial[key])
-          .join(" , "),
-        AllIndustrial: Object.keys(property.AllIndustrial || {})
-          .filter((key) => property.AllIndustrial[key])
-          .join(" , "),
-        AllPlotLand: Object.keys(property.AllPlotLand || {})
-          .filter((key) => property.AllPlotLand[key])
-          .join(" , "),
-        Facing: Object.keys(property.Facing || {})
-          .filter((key) => property.Facing[key])
-          .join(" , "),
-        BhkScheme: Object.keys(property.BhkScheme || {})
-          .filter((key) => property.BhkScheme[key])
-          .join(" , "),
-        ResidentialAvailabilityType: Object.keys(
-          property.ResidentialAvailabilityType || {}
-        )
-          .filter((key) => property.ResidentialAvailabilityType[key])
-          .join(" , "),
-        ResidentAvailable: Object.keys(property.ResidentAvailable || {})
-          .filter((key) => property.ResidentAvailable[key])
-          .join(" , "),
-        CommercialPropertyFeatures: Object.keys(
-          property.CommercialPropertyFeatures || {}
-        )
-          .filter((key) => property.CommercialPropertyFeatures[key])
-          .join(" , "),
-        PropertyDescription: property.PropertyDescription || "N/A",
-      });
+    const data = transformData(filteredData);
+
+    data.forEach((requirement) => {
+      worksheet.addRow(requirement);
     });
 
     // Style the header row
