@@ -37,7 +37,9 @@ const getAllProperty = async (req, res) => {
     let properties = cache.get("allpropertys");
     if (!properties) {
       // Fetch from DB and filter only verified properties
-      properties = await propertyModel.find({ Verified: true }).lean();
+      properties = await propertyModel
+        .find({ Verified: true, RecycleBin: false })
+        .lean();
       cache.set("allpropertys", properties); // Cache the result
     }
     res
@@ -151,7 +153,6 @@ const getPropertyAsPerType = async (req, res) => {
   }
 };
 
-
 const getIdsAndDates = async (req, res) => {
   try {
     // Get today's date in ISO format without time
@@ -261,5 +262,5 @@ module.exports = {
   deleteProperty,
   getIdsAndDates,
   updateAllProperties,
-  getPropertyAsPerType
+  getPropertyAsPerType,
 };

@@ -42,6 +42,7 @@ const propertySchema = new Schema({
     Bedrooms: { type: Number },
     Bathrooms: { type: Number },
     Sqft: { type: String },
+    Sqyd: { type: String },
   },
   PropertyPhotos: {
     type: [String], // Array to store URLs of property photos
