@@ -50,7 +50,7 @@ const getExcelForEnquiry = async (req, res) => {
     const enquiries = await enquiryModel.find();
 
     // Destructure the filters from the query or body (assuming they are sent in query params)
-    const { filterBy, approveStatus, year, month } = req.query;
+    const { filterBy, approveStatus, year, month,propertyType } = req.query;
 
     // Filter the data based on the provided filters
     const filteredData = enquiries.filter((property) => {
@@ -95,7 +95,12 @@ const getExcelForEnquiry = async (req, res) => {
           ? property.EnquiryStatus === approveStatus
           : true;
 
-      return matchesDate && matchesStatus;
+          const matchesPropertyType =
+          propertyType && propertyType !== "All Enquiry Type"
+            ? property.EnquiryPropertyType === propertyType
+            : true;
+
+      return matchesDate && matchesStatus && matchesPropertyType;
     });
 
     // Map filtered data to the format for Excel
