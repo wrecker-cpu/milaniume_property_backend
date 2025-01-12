@@ -109,12 +109,7 @@ const getExcelForEnquiry = async (req, res) => {
       EmailId: enquiry.EnquiryPersonEmail,
       MobileNo: enquiry.EnquiryPersonPhone,
       PropertyType: enquiry.EnquiryPropertyType,
-      Status:
-        enquiry.EnquiryStatus === "approved"
-          ? "READ"
-          : enquiry.status === "pending"
-          ? ""
-          : "UNREAD",
+      Status: enquiry?.EnquiryStatus === "approved" ? "READ" : "UNREAD",
       Message: enquiry.EnquiryPersonMessage,
     }));
 
