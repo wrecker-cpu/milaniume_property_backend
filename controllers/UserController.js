@@ -9,7 +9,7 @@ const createUser = async (req, res) => {
     const user = {
       Email: req.body.Email,
       Password: encrypt.generatePassword(req.body.Password), // Ensure async if possible
-      MobileNumber: "",
+      MobileNumber: req.body.MobileNumber,
       FullName: req.body.FullName,
       DateOfBirth: "",
       status: req.body.status,
