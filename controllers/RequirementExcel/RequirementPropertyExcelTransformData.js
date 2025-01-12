@@ -3,7 +3,13 @@
 const transformResidentData = (filteredData) => {
   return filteredData.map((requirement) => ({
     RequirementIdNo: requirement._id,
-    DateAndTime: requirement.RequiredPersonDate,
+    DateAndTime: new Date(requirement?.RequiredPersonDate).toLocaleString(
+      "en-US",
+      {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }
+    ),
     Role: requirement.RequiredPersonRole,
     FullName: requirement.RequiredPersonName,
     MobileNo: requirement.RequiredPersonPhone,
@@ -52,7 +58,13 @@ const transformResidentData = (filteredData) => {
 const transformCommercialData = (filteredData) => {
   return filteredData.map((requirement) => ({
     RequirementIdNo: requirement._id,
-    DateAndTime: requirement.RequiredPersonDate,
+    DateAndTime: new Date(requirement?.RequiredPersonDate).toLocaleString(
+      "en-US",
+      {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }
+    ),
     Role: requirement.RequiredPersonRole,
     FullName: requirement.RequiredPersonName,
     MobileNo: requirement.RequiredPersonPhone,
@@ -88,7 +100,13 @@ const transformCommercialData = (filteredData) => {
 const transformIndustrialData = (filteredData) => {
   return filteredData.map((requirement) => ({
     RequirementIdNo: requirement._id,
-    DateAndTime: requirement.RequiredPersonDate,
+    DateAndTime: new Date(requirement?.RequiredPersonDate).toLocaleString(
+      "en-US",
+      {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }
+    ),
     Role: requirement.RequiredPersonRole,
     FullName: requirement.RequiredPersonName,
     MobileNo: requirement.RequiredPersonPhone,
@@ -119,7 +137,13 @@ const transformIndustrialData = (filteredData) => {
 const transformAgricultureData = (filteredData) => {
   return filteredData.map((requirement) => ({
     RequirementIdNo: requirement._id,
-    DateAndTime: requirement.RequiredPersonDate,
+    DateAndTime: new Date(requirement?.RequiredPersonDate).toLocaleString(
+      "en-US",
+      {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }
+    ),
     Role: requirement.RequiredPersonRole,
     FullName: requirement.RequiredPersonName,
     MobileNo: requirement.RequiredPersonPhone,

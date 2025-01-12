@@ -2,7 +2,7 @@
 
 const excelResidentColumns = [
   { header: "ID NO:", key: "IdNo", width: 30 },
-  { header: "DATE & TIME:", key: "DateAndTime", width: 20 },
+  { header: "DATE & TIME:", key: "DateAndTime", width: 30 },
   { header: "PROPERTY NAME", key: "PropertyName", width: 30 },
   { header: "MOBILE NO :", key: "MobileNo", width: 15 },
   { header: "EMAILID", key: "EmailId", width: 30 },
@@ -24,7 +24,7 @@ const excelResidentColumns = [
 
 const excelCommercialColumns = [
   { header: "ID NO:", key: "IdNo", width: 30 },
-  { header: "DATE & TIME:", key: "DateAndTime", width: 20 },
+  { header: "DATE & TIME:", key: "DateAndTime", width: 30 },
   { header: "PROPERTY NAME", key: "PropertyName", width: 30 },
   { header: "MOBILE NO :", key: "MobileNo", width: 15 },
   { header: "EMAILID", key: "EmailId", width: 30 },
@@ -44,7 +44,7 @@ const excelCommercialColumns = [
 
 const excelIndustrialColumns = [
   { header: "ID NO:", key: "IdNo", width: 30 },
-  { header: "DATE & TIME:", key: "DateAndTime", width: 20 },
+  { header: "DATE & TIME:", key: "DateAndTime", width: 30 },
   { header: "PROPERTY NAME", key: "PropertyName", width: 30 },
   { header: "MOBILE NO :", key: "MobileNo", width: 15 },
   { header: "EMAILID", key: "EmailId", width: 30 },
@@ -63,7 +63,7 @@ const excelIndustrialColumns = [
 
 const excelAgricultureColumns = [
   { header: "ID NO:", key: "IdNo", width: 30 },
-  { header: "DATE & TIME:", key: "DateAndTime", width: 20 },
+  { header: "DATE & TIME:", key: "DateAndTime", width: 30 },
   { header: "PROPERTY NAME", key: "PropertyName", width: 30 },
   { header: "MOBILE NO :", key: "MobileNo", width: 15 },
   { header: "EMAILID", key: "EmailId", width: 30 },

@@ -37,7 +37,7 @@ const getExcelForEnquiry = async (req, res) => {
     // Define columns
     worksheet.columns = [
       { header: "Quick ID No.", key: "QuickIDNo", width: 30 },
-      { header: "DATE & TIME", key: "Date&Time", width: 10 },
+      { header: "DATE & TIME", key: "Date&Time", width: 30 },
       { header: "FULL NAME", key: "FullName", width: 20 },
       { header: "EMAIL ID", key: "EmailId", width: 30 },
       { header: "MOBILE NO :", key: "MobileNo", width: 15 },
@@ -101,7 +101,10 @@ const getExcelForEnquiry = async (req, res) => {
     // Map filtered data to the format for Excel
     const data = filteredData.map((enquiry) => ({
       QuickIDNo: enquiry._id,
-      "Date&Time": enquiry.EnquiryPersonDate,
+      "Date&Time": new Date(enquiry.EnquiryPersonDate).toLocaleString("en-US", {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }),
       FullName: enquiry.EnquiryPersonName,
       EmailId: enquiry.EnquiryPersonEmail,
       MobileNo: enquiry.EnquiryPersonPhone,

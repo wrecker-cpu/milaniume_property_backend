@@ -3,7 +3,13 @@
 const transformResidentData = (filteredData) => {
   return filteredData.map((requirement) => ({
     IdNo: requirement._id,
-    DateAndTime: requirement?.PropertyAddedDate,
+    DateAndTime: new Date(requirement?.PropertyAddedDate).toLocaleString(
+      "en-US",
+      {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }
+    ),
     PropertyName: requirement?.PropertyName,
     MobileNo: requirement?.ContactDetails.ContactPhone,
     EmailId: requirement?.ContactDetails.ContactEmail,
@@ -61,7 +67,13 @@ const transformResidentData = (filteredData) => {
 const transformCommercialData = (filteredData) => {
   return filteredData.map((requirement) => ({
     IdNo: requirement._id,
-    DateAndTime: requirement?.PropertyAddedDate,
+    DateAndTime: new Date(requirement?.PropertyAddedDate).toLocaleString(
+      "en-US",
+      {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }
+    ),
     PropertyName: requirement?.PropertyName,
     MobileNo: requirement?.ContactDetails.ContactPhone,
     EmailId: requirement?.ContactDetails.ContactEmail,
@@ -110,7 +122,13 @@ const transformCommercialData = (filteredData) => {
 const transformIndustrialData = (filteredData) => {
   return filteredData.map((requirement) => ({
     IdNo: requirement._id,
-    DateAndTime: requirement?.PropertyAddedDate,
+    DateAndTime: new Date(requirement?.PropertyAddedDate).toLocaleString(
+      "en-US",
+      {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }
+    ),
     PropertyName: requirement?.PropertyName,
     MobileNo: requirement?.ContactDetails.ContactPhone,
     EmailId: requirement?.ContactDetails.ContactEmail,
@@ -132,7 +150,7 @@ const transformIndustrialData = (filteredData) => {
       Object.keys(requirement.AllIndustrial || {}).find(
         (key) => requirement.AllIndustrial[key]
       ) || "N/A",
-   
+
     Facing:
       Object.keys(requirement.Facing || {})
         .filter((key) => requirement.Facing[key])
@@ -155,7 +173,13 @@ const transformIndustrialData = (filteredData) => {
 const transformAgricultureData = (filteredData) => {
   return filteredData.map((requirement) => ({
     IdNo: requirement._id,
-    DateAndTime: requirement?.PropertyAddedDate,
+    DateAndTime: new Date(requirement?.PropertyAddedDate).toLocaleString(
+      "en-US",
+      {
+        dateStyle: "short",
+        timeStyle: "medium",
+      }
+    ),
     PropertyName: requirement?.PropertyName,
     MobileNo: requirement?.ContactDetails.ContactPhone,
     EmailId: requirement?.ContactDetails.ContactEmail,
