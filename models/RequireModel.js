@@ -11,13 +11,14 @@ const requireSchema = new Schema({
   RequiredPersonPhone: { type: String, required: true },
   RequiredPersonEmail: { type: String, required: true },
   RequiredPersonDate: { type: Date, default: Date.now },
+  RecycleBin: { type: Boolean, default: false },
   RequiredPropertyDetails: {
     RequiredPropertyType: {
       type: String,
       required: true,
       enum: ["Residential", "Commercial", "Industrial", "Plot&Land"],
     },
-    RequirementArea:{type: String},
+    RequirementArea: { type: String },
     RequiredAreaSqft: { min: { type: String }, max: { type: String } },
     RequiredBudget: { min: { type: String }, max: { type: String } },
     RequiredPropertySellOrRent: { type: String, enum: ["Sell", "Rent", "Buy"] },

@@ -113,6 +113,19 @@ const addRequirement = async (req, res) => {
 // Get all requirements
 const getAllRequirement = async (req, res) => {
   try {
+    const requirement = await requirementModel
+      .find({ RecycleBin: false })
+      .lean(); // Use .lean() for faster query
+    res
+      .status(200)
+      .json({ data: requirement, message: "requirement fetched successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const getAllAdminRequirement = async (req, res) => {
+  try {
     const requirement = await requirementModel.find().lean(); // Use .lean() for faster query
     res
       .status(200)
@@ -149,26 +162,25 @@ const getExcelForRequirement = async (req, res) => {
     let transformData;
 
     switch (propertyType) {
-      case 'Residential':
+      case "Residential":
         excelColumns = excelResidentColumns;
         transformData = transformResidentData;
         break;
-      case 'Commercial':
+      case "Commercial":
         excelColumns = excelCommercialColumns;
         transformData = transformCommercialData;
         break;
-      case 'Industrial':
+      case "Industrial":
         excelColumns = excelIndustrialColumns;
         transformData = transformIndustrialData;
         break;
-      case 'Agriculture':
+      case "Agriculture":
         excelColumns = excelAgricultureColumns;
         transformData = transformAgricultureData;
         break;
       default:
         return res.status(400).json({ message: "Invalid PropertyType" });
     }
-
 
     // Define columns based on the new schema
     worksheet.columns = excelColumns;
@@ -177,7 +189,6 @@ const getExcelForRequirement = async (req, res) => {
     const requirements = await requirementModel.find();
 
     // Destructure the filters from the query or body (assuming they are sent in query params)
-
 
     // Filter the data based on the provided filters
     const filteredData = requirements.filter((requirement) => {
@@ -216,8 +227,10 @@ const getExcelForRequirement = async (req, res) => {
             requirementDate <= new Date(year, month, 0)
           : true;
 
-          const matchesPropertyType =
-        propertyType ? requirement.RequiredPropertyDetails?.RequiredPropertyType === propertyType : true;
+      const matchesPropertyType = propertyType
+        ? requirement.RequiredPropertyDetails?.RequiredPropertyType ===
+          propertyType
+        : true;
 
       return matchesDate && matchesPropertyType;
     });
@@ -319,4 +332,5 @@ module.exports = {
   deleteRequirement,
   updateAllRequirement,
   getExcelForRequirement,
+  getAllAdminRequirement
 };

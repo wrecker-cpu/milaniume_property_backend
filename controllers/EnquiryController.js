@@ -50,7 +50,7 @@ const getExcelForEnquiry = async (req, res) => {
     const enquiries = await enquiryModel.find();
 
     // Destructure the filters from the query or body (assuming they are sent in query params)
-    const { filterBy, approveStatus, year, month,propertyType } = req.query;
+    const { filterBy, approveStatus, year, month, propertyType } = req.query;
 
     // Filter the data based on the provided filters
     const filteredData = enquiries.filter((property) => {
@@ -95,10 +95,10 @@ const getExcelForEnquiry = async (req, res) => {
           ? property.EnquiryStatus === approveStatus
           : true;
 
-          const matchesPropertyType =
-          propertyType && propertyType !== "All Enquiry Type"
-            ? property.EnquiryPropertyType === propertyType
-            : true;
+      const matchesPropertyType =
+        propertyType && propertyType !== "All Enquiry Type"
+          ? property.EnquiryPropertyType === propertyType
+          : true;
 
       return matchesDate && matchesStatus && matchesPropertyType;
     });
@@ -151,12 +151,39 @@ const getExcelForEnquiry = async (req, res) => {
 // Get all enquirys
 const getAllEnquiry = async (req, res) => {
   try {
+    const enquiry = await enquiryModel.find({ RecycleBin: false }).lean(); // Use .lean() for faster query
+    res
+      .status(200)
+      .json({ data: enquiry, message: "enquiry fetched successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const getAllAdminEnquiry = async (req, res) => {
+  try {
     const enquiry = await enquiryModel.find().lean(); // Use .lean() for faster query
     res
       .status(200)
       .json({ data: enquiry, message: "enquiry fetched successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+const updateAllEnquires = async (req, res) => {
+  try {
+    const updateEnquiry = req.body;
+    const result = await enquiryModel.updateMany({}, updateEnquiry);
+
+    res.status(200).json({
+      message: "Enquires updated successfully",
+      modifiedCount: result.modifiedCount,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating users", error: error.message });
   }
 };
 
@@ -210,8 +237,10 @@ const deleteEnquiry = async (req, res) => {
 module.exports = {
   addEnquiry,
   getAllEnquiry,
+  getAllAdminEnquiry,
   updateEnquiry,
   getEnquirybyID,
   deleteEnquiry,
   getExcelForEnquiry,
+  updateAllEnquires,
 };

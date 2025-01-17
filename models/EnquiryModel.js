@@ -8,6 +8,7 @@ const enquirySchema = new Schema({
   EnquiryPersonMessage: { type: String, required: true },
   EnquiryPersonDate: { type: Date, default: Date.now },
   EnquiryPropertyType: { type: String },
+  RecycleBin: { type: Boolean, default: false },
   EnquiryStatus: {
     type: String,
     enum: ["pending", "overlooked", "approved"],

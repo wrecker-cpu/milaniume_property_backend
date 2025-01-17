@@ -124,8 +124,7 @@ const getExcelForProperties = async (req, res) => {
           : !property?.Verified;
 
       const matchesPropertyType = propertyType
-        ? property.PropertyType ===
-          propertyType
+        ? property.PropertyType === propertyType
         : true;
 
       return matchesDate && matchesType && matchesPropertyType;
@@ -292,7 +291,17 @@ const getIdsAndDates = async (req, res) => {
     const today = new Date().toISOString().split("T")[0];
 
     // Fetch IDs, dates, and counts from all models where the date matches today
-    const [data1, data2, data3, count1, count2, count3] = await Promise.all([
+    const [
+      data1,
+      data2,
+      data3,
+      count1,
+      count2,
+      count3,
+      recycleBinCount1,
+      recycleBinCount2,
+      recycleBinCount3,
+    ] = await Promise.all([
       propertyModel
         .find(
           {
@@ -329,6 +338,9 @@ const getIdsAndDates = async (req, res) => {
       propertyModel.countDocuments(),
       enquiryModel.countDocuments(),
       requireModel.countDocuments(),
+      propertyModel.countDocuments({ RecycleBin: true }),
+      enquiryModel.countDocuments({ RecycleBin: true }),
+      requireModel.countDocuments({ RecycleBin: true }),
     ]);
 
     // Standardize the date field names in the response
@@ -351,14 +363,17 @@ const getIdsAndDates = async (req, res) => {
         propertyAdded: {
           today: formattedData1,
           total: count1,
+          recycleBinTotal: recycleBinCount1,
         },
         enquiryAdded: {
           today: formattedData2,
           total: count2,
+          recycleBinTotal: recycleBinCount2,
         },
         requirementAdded: {
           today: formattedData3,
           total: count3,
+          recycleBinTotal: recycleBinCount3,
         },
       },
       message: "IDs, dates, and total counts fetched successfully",
