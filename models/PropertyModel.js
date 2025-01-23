@@ -16,6 +16,10 @@ const propertySchema = new Schema({
       "Rental Property",
     ],
   },
+  Area: {
+    Sqft: { max: {type: String}, min: {type: String} },
+    Sqyd: { max: {type: String}, min: {type: String} },
+  },
   ForSale: {
     type: Boolean,
     default: true,
