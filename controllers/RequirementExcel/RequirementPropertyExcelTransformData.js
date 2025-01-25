@@ -1,5 +1,3 @@
-// transformData.js
-
 const transformResidentData = (filteredData) => {
   return filteredData.map((requirement) => ({
     RequirementIdNo: requirement._id,
@@ -41,8 +39,23 @@ const transformResidentData = (filteredData) => {
         .filter((key) => requirement.Condition[key])
         .join(", ") || "N/A",
     areasqft: `${
-      requirement.RequiredPropertyDetails?.RequiredAreaSqft?.min || "N/A"
-    } - ${requirement.RequiredPropertyDetails?.RequiredAreaSqft?.max || "N/A"}`,
+      requirement.RequiredPropertyDetails?.RequiredAreaSqft?.min
+        ? `${requirement.RequiredPropertyDetails.RequiredAreaSqft.min} sqft`
+        : "N/A"
+    } to ${
+      requirement.RequiredPropertyDetails?.RequiredAreaSqft?.max
+        ? `${requirement.RequiredPropertyDetails.RequiredAreaSqft.max} sqft`
+        : "N/A"
+    }`,
+    areasqyd:`${
+      requirement.RequiredPropertyDetails?.RequiredAreaSqyd?.min
+        ? `${requirement.RequiredPropertyDetails.RequiredAreaSqyd.min} sqft`
+        : "N/A"
+    } to ${
+      requirement.RequiredPropertyDetails?.RequiredAreaSqyd?.max
+        ? `${requirement.RequiredPropertyDetails.RequiredAreaSqyd.max} sqft`
+        : "N/A"
+    }`,
     MinBudget: `${
       requirement.RequiredPropertyDetails?.RequiredBudget?.min || "N/A"
     }`,
@@ -54,7 +67,7 @@ const transformResidentData = (filteredData) => {
   }));
 };
 
-// Similarly, add transform functions for other categories (Commercial, Industrial, etc.)
+
 const transformCommercialData = (filteredData) => {
   return filteredData.map((requirement) => ({
     RequirementIdNo: requirement._id,
@@ -87,7 +100,24 @@ const transformCommercialData = (filteredData) => {
       Object.keys(requirement.Condition || {})
         .filter((key) => requirement.Condition[key])
         .join(", ") || "N/A",
-    areasqft: `${requirement.RequiredPropertyDetails.RequiredAreaSqft.min} - ${requirement.RequiredPropertyDetails.RequiredAreaSqft.max}`,
+        areasqft: `${
+          requirement.RequiredPropertyDetails?.RequiredAreaSqft?.min
+            ? `${requirement.RequiredPropertyDetails.RequiredAreaSqft.min} sqft`
+            : "N/A"
+        } to ${
+          requirement.RequiredPropertyDetails?.RequiredAreaSqft?.max
+            ? `${requirement.RequiredPropertyDetails.RequiredAreaSqft.max} sqft`
+            : "N/A"
+        }`,
+        areasqyd:`${
+          requirement.RequiredPropertyDetails?.RequiredAreaSqyd?.min
+            ? `${requirement.RequiredPropertyDetails.RequiredAreaSqyd.min} sqft`
+            : "N/A"
+        } to ${
+          requirement.RequiredPropertyDetails?.RequiredAreaSqyd?.max
+            ? `${requirement.RequiredPropertyDetails.RequiredAreaSqyd.max} sqft`
+            : "N/A"
+        }`,
     MinBudget: `${requirement.RequiredPropertyDetails.RequiredBudget.min}`,
     MaxBudget: `${requirement.RequiredPropertyDetails.RequiredBudget.max}`,
     Description:
@@ -95,7 +125,6 @@ const transformCommercialData = (filteredData) => {
   }));
 };
 
-// transformIndustrialData.js
 
 const transformIndustrialData = (filteredData) => {
   return filteredData.map((requirement) => ({
@@ -124,7 +153,24 @@ const transformIndustrialData = (filteredData) => {
     Facing: Object.keys(requirement.Facing)
       .filter((key) => requirement.Facing[key])
       .join(", "),
-    areasqft: `${requirement.RequiredPropertyDetails.RequiredAreaSqft.min} - ${requirement.RequiredPropertyDetails.RequiredAreaSqft.max}`,
+      areasqft: `${
+        requirement.RequiredPropertyDetails?.RequiredAreaSqft?.min
+          ? `${requirement.RequiredPropertyDetails.RequiredAreaSqft.min} sqft`
+          : "N/A"
+      } to ${
+        requirement.RequiredPropertyDetails?.RequiredAreaSqft?.max
+          ? `${requirement.RequiredPropertyDetails.RequiredAreaSqft.max} sqft`
+          : "N/A"
+      }`,
+      areasqyd:`${
+        requirement.RequiredPropertyDetails?.RequiredAreaSqyd?.min
+          ? `${requirement.RequiredPropertyDetails.RequiredAreaSqyd.min} sqft`
+          : "N/A"
+      } to ${
+        requirement.RequiredPropertyDetails?.RequiredAreaSqyd?.max
+          ? `${requirement.RequiredPropertyDetails.RequiredAreaSqyd.max} sqft`
+          : "N/A"
+      }`,
     MinBudget: `${requirement.RequiredPropertyDetails.RequiredBudget.min}`,
     MaxBudget: `${requirement.RequiredPropertyDetails.RequiredBudget.max}`,
     Description:
@@ -132,7 +178,6 @@ const transformIndustrialData = (filteredData) => {
   }));
 };
 
-// transformAgricultureData.js
 
 const transformAgricultureData = (filteredData) => {
   return filteredData.map((requirement) => ({
@@ -156,7 +201,24 @@ const transformAgricultureData = (filteredData) => {
         (key) => requirement.AllPlotAndLand[key]
       ) || "N/A",
     PropertyType: requirement.RequiredPropertyDetails.RequiredPropertyType,
-    areasqft: `${requirement.RequiredPropertyDetails.RequiredAreaSqft.min} - ${requirement.RequiredPropertyDetails.RequiredAreaSqft.max}`,
+    areasqft: `${
+      requirement.RequiredPropertyDetails?.RequiredAreaSqft?.min
+        ? `${requirement.RequiredPropertyDetails.RequiredAreaSqft.min} sqft`
+        : "N/A"
+    } to ${
+      requirement.RequiredPropertyDetails?.RequiredAreaSqft?.max
+        ? `${requirement.RequiredPropertyDetails.RequiredAreaSqft.max} sqft`
+        : "N/A"
+    }`,
+    areasqyd:`${
+      requirement.RequiredPropertyDetails?.RequiredAreaSqyd?.min
+        ? `${requirement.RequiredPropertyDetails.RequiredAreaSqyd.min} sqft`
+        : "N/A"
+    } to ${
+      requirement.RequiredPropertyDetails?.RequiredAreaSqyd?.max
+        ? `${requirement.RequiredPropertyDetails.RequiredAreaSqyd.max} sqft`
+        : "N/A"
+    }`,
     MinBudget: `${requirement.RequiredPropertyDetails.RequiredBudget.min}`,
     MaxBudget: `${requirement.RequiredPropertyDetails.RequiredBudget.max}`,
     Description:

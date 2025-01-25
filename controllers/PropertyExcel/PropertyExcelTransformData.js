@@ -52,9 +52,11 @@ const transformResidentData = (filteredData) => {
         .join(", ") || "N/A",
 
     areasqft: `${
-      requirement?.PropertyDetails?.Sqft ||
-      requirement?.PropertyDetails?.Sqyd ||
-      "N/A"
+      requirement?.PropertyDetails?.Sqft
+        ? `${requirement.PropertyDetails.Sqft} (SQFT)`
+        : requirement?.PropertyDetails?.Sqyd
+        ? `${requirement.PropertyDetails.Sqyd} (SQYD)`
+        : "N/A"
     }`,
     SalesPrice: `${requirement.Prices?.SalesPrice || "N/A"}`,
     RentPrice: `${requirement.Prices?.RentPrice || "N/A"}`,
@@ -106,9 +108,11 @@ const transformCommercialData = (filteredData) => {
         .join(", ") || "N/A",
 
     areasqft: `${
-      requirement?.PropertyDetails?.Sqft ||
-      requirement?.PropertyDetails?.Sqyd ||
-      "N/A"
+      requirement?.PropertyDetails?.Sqft
+        ? `${requirement.PropertyDetails.Sqft} (SQFT)`
+        : requirement?.PropertyDetails?.Sqyd
+        ? `${requirement.PropertyDetails.Sqyd} (SQYD)`
+        : "N/A"
     }`,
     SalesPrice: `${requirement.Prices?.SalesPrice || "N/A"}`,
     RentPrice: `${requirement.Prices?.RentPrice || "N/A"}`,
@@ -157,9 +161,11 @@ const transformIndustrialData = (filteredData) => {
         .join(", ") || "N/A",
 
     areasqft: `${
-      requirement?.PropertyDetails?.Sqft ||
-      requirement?.PropertyDetails?.Sqyd ||
-      "N/A"
+      requirement?.PropertyDetails?.Sqft
+        ? `${requirement.PropertyDetails.Sqft} (SQFT)`
+        : requirement?.PropertyDetails?.Sqyd
+        ? `${requirement.PropertyDetails.Sqyd} (SQYD)`
+        : "N/A"
     }`,
     SalesPrice: `${requirement.Prices?.SalesPrice || "N/A"}`,
     RentPrice: `${requirement.Prices?.RentPrice || "N/A"}`,
@@ -203,9 +209,11 @@ const transformAgricultureData = (filteredData) => {
       ) || "N/A",
 
     areasqft: `${
-      requirement?.PropertyDetails?.Sqft ||
-      requirement?.PropertyDetails?.Sqyd ||
-      "N/A"
+      requirement?.PropertyDetails?.Sqft
+        ? `${requirement.PropertyDetails.Sqft} (SQFT)`
+        : requirement?.PropertyDetails?.Sqyd
+        ? `${requirement.PropertyDetails.Sqyd} (SQYD)`
+        : "N/A"
     }`,
     SalesPrice: `${requirement.Prices?.SalesPrice || "N/A"}`,
     RentPrice: `${requirement.Prices?.RentPrice || "N/A"}`,
