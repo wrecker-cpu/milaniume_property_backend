@@ -3,6 +3,7 @@ require("dotenv").config();
 const NodeCache = require("node-cache");
 const ExcelJS = require("exceljs");
 const cache = new NodeCache({ stdTTL: 1800 });
+const cron = require("node-cron");
 
 // Create reminder
 const addReminder = async (req, res) => {
@@ -151,7 +152,11 @@ const addReminder = async (req, res) => {
 // Get all reminders
 const getAllReminder = async (req, res) => {
   try {
-    const reminder = await reminderModel.find().lean().populate("Requirements").populate("Enquiry"); // Use .lean() for faster query
+    const reminder = await reminderModel
+      .find()
+      .lean()
+      .populate("Requirements")
+      .populate("Enquiry"); // Use .lean() for faster query
     res
       .status(200)
       .json({ data: reminder, message: "reminder fetched successfully" });
@@ -204,6 +209,31 @@ const getReminderbyID = async (req, res) => {
   }
 };
 
+const checkReminders = async (io) => {
+  const currentDateTime = new Date();
+  const reminders = await reminderModel.find({
+    "Date&Time": { $lte: currentDateTime },
+  });
+
+  reminders.forEach((reminder) => {
+    // Emit reminder notifications to all connected clients
+    io.emit("reminderNotification", {
+      title: "Reminder!",
+      message: `Reminder for ${reminder.Name}: ${reminder.Description}`,
+    });
+    console.log(`Reminder emitted: ${reminder.Name} - ${reminder.Description}`);
+    reminder.save();
+  });
+};
+
+// Arrow function to start the cron job for reminders
+const startCronJob = (io) => {
+  cron.schedule("* * * * *", () => {
+    console.log("Checking for reminders...");
+    checkReminders(io);
+  });
+};
+
 // Update reminder
 const updateReminder = async (req, res) => {
   const id = req.params.id;
@@ -242,4 +272,6 @@ module.exports = {
   getReminderbyID,
   deleteReminder,
   updateAllReminders,
+  checkReminders,
+  startCronJob,
 };

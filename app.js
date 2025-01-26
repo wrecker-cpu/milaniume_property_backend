@@ -3,14 +3,35 @@ const mongoose = require("mongoose");
 const compression = require("compression");
 const cors = require("cors");
 require("dotenv").config(); // Ensure environment variables are loaded
-
-const app = express();
 const PORT = process.env.PORT || 4000;
+const app = express();
+
+
+// const io = socketIo(server, {
+//   cors: {
+//     origin: "*", // Replace with your frontend URL
+//     methods: ["GET", "POST"],
+//   },
+// });
 
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors("*"));
+
+// reminderController.startCronJob(io);
+
+// io.on("connection", (socket) => {
+//   console.log("A user connected");
+
+//   // Send a test message to the client
+//   socket.emit("message", "Welcome to the reminder notification service!");
+
+//   // When a client disconnects
+//   socket.on("disconnect", () => {
+//     console.log("User disconnected");
+//   });
+// });
 
 // Require Routes
 const userRoutes = require("./routes/UserRoutes");
@@ -19,7 +40,7 @@ const propertyRoutes = require("./routes/PropertyRoutes");
 const enquiryRoutes = require("./routes/EnquiryRoutes");
 const requireRoutes = require("./routes/RequireRoutes");
 const postUserPropertyRoutes = require("./routes/UserPostPropertyRoutes");
-const reminderRoutes =require("./routes/ReminderRoutes");
+const reminderRoutes = require("./routes/ReminderRoutes");
 
 app.get("/", (req, res) => {
   res.send("API is running...");

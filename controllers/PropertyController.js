@@ -255,27 +255,40 @@ const updateAllProperties = async (req, res) => {
 
 const getPropertyAsPerType = async (req, res) => {
   try {
-    // Aggregate property counts grouped by PropertyType
+    // Aggregate property counts grouped by PropertyType, with conditions for RecycleBin
     const propertyCounts = await propertyModel.aggregate([
       {
         $group: {
-          _id: "$PropertyType",
-          total: { $sum: 1 },
+          _id: "$PropertyType", // Group by PropertyType
+          total: { $sum: 1 }, // Total count of properties per type
+          recycled: {
+            $sum: {
+              $cond: [{ $eq: ["$RecycleBin", true] }, 1, 0], // Count where RecycleBin is true
+            },
+          },
+          active: {
+            $sum: {
+              $cond: [{ $eq: ["$RecycleBin", false] }, 1, 0], // Count where RecycleBin is false
+            },
+          },
         },
       },
     ]);
 
-    // Format the response to return the property counts
+    // Format the response to return the property counts with active and recycled counts
     const formattedPropertyCounts = propertyCounts.map((item) => ({
       propertyType: item._id,
       total: item.total,
+      recycled: item.recycled,
+      active: item.active,
     }));
 
     res.status(200).json({
       data: {
         propertyCounts: formattedPropertyCounts,
       },
-      message: "Property counts per type fetched successfully",
+      message:
+        "Property counts per type (active and recycled) fetched successfully",
     });
   } catch (error) {
     res.status(500).json({
@@ -290,7 +303,7 @@ const getIdsAndDates = async (req, res) => {
     // Get today's date in ISO format without time
     const today = new Date().toISOString().split("T")[0];
 
-    // Fetch IDs, dates, and counts from all models where the date matches today
+    // Fetch data in parallel
     const [
       data1,
       data2,
@@ -301,6 +314,8 @@ const getIdsAndDates = async (req, res) => {
       recycleBinCount1,
       recycleBinCount2,
       recycleBinCount3,
+      propertyTypeActiveCounts,
+      propertyTypeRecycledCounts,
     ] = await Promise.all([
       propertyModel
         .find(
@@ -341,6 +356,16 @@ const getIdsAndDates = async (req, res) => {
       propertyModel.countDocuments({ RecycleBin: true }),
       enquiryModel.countDocuments({ RecycleBin: true }),
       requireModel.countDocuments({ RecycleBin: true }),
+      // Get counts by PropertyType for active properties
+      propertyModel.aggregate([
+        { $match: { RecycleBin: false } },
+        { $group: { _id: "$PropertyType", count: { $sum: 1 } } },
+      ]),
+      // Get counts by PropertyType for recycled properties
+      propertyModel.aggregate([
+        { $match: { RecycleBin: true } },
+        { $group: { _id: "$PropertyType", count: { $sum: 1 } } },
+      ]),
     ]);
 
     // Standardize the date field names in the response
@@ -357,6 +382,30 @@ const getIdsAndDates = async (req, res) => {
       date: item.RequiredPersonDate,
     }));
 
+    // Format property types
+    const propertyTypeFormatted = propertyTypeActiveCounts.reduce(
+      (acc, item) => {
+        const type = item._id;
+        acc[type] = {
+          active: item.count,
+          recycled: 0, // Default to 0 for recycled if not found in the recycled dataset
+        };
+        return acc;
+      },
+      {}
+    );
+
+    propertyTypeRecycledCounts.forEach((item) => {
+      const type = item._id;
+      if (propertyTypeFormatted[type]) {
+        propertyTypeFormatted[type].recycled = item.count;
+      } else {
+        propertyTypeFormatted[type] = {
+          active: 0, // Default to 0 for active if not found in the active dataset
+          recycled: item.count,
+        };
+      }
+    });
     // Combine results into a single response
     res.status(200).json({
       data: {
@@ -375,6 +424,7 @@ const getIdsAndDates = async (req, res) => {
           total: count3,
           recycleBinTotal: recycleBinCount3,
         },
+        propertyType: propertyTypeFormatted,
       },
       message: "IDs, dates, and total counts fetched successfully",
     });
